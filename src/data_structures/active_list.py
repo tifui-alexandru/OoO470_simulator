@@ -20,6 +20,18 @@ class ActiveList():
         })
 
         return "OK"
+    
+    def empty(self):
+        return len(self.__active_list) == 0
+
+    def commited_instruction(self):
+        if self.empty():
+            return None
+        # TODO: actually commit the instruction
+        if self.__active_list[0]["Done"] == "true":
+            return self.__active_list[0]["PC"]
+        else:
+            return None
 
     def get_json(self):
         return {"ActiveList": self.__active_list}
