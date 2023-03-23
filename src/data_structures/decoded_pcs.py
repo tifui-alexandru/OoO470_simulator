@@ -4,6 +4,9 @@ class DecodedPCs:
         self.__instr = []
         self.__backpressure = False
 
+    def apply_backpressure(self)
+        self.__backpressure = True
+
     def backpressure(self):
         return self.__backpressure
 
@@ -11,14 +14,13 @@ class DecodedPCs:
         self.__pcs.append(pc)
         self.__instr.append(instr)
 
-    def pop(self):
-        ret_val = (self.__pcs[0], self.__instr[0])
-        self.__pcs = self.__pcs[1:]
-        self.__instr = self.__instr[1:]
-        return ret_val
+    def get_instructions(self):
+        return self.__pcs, self.__instr
 
-    def size(self):
-        return len(self.__pcs)
+    def flush(self):
+        self.__pcs = []
+        self.__instr = []
+        self.__backpressure = False
 
     def get_json(self):
         return {"DecodedPCs": self.__pcs}

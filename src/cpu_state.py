@@ -72,10 +72,70 @@ class CPU_state():
             }
             self.__decoded_pcs.append(idx, instr_obj)
 
+    def __rename_src_reg(self, x):
+        if x[0] == 'x':
+            return "p" + str(self.__register_map_table(int(x[1:])))
+        else:
+            return x
+
+    def __rename_dst_reg(self, x):
+        pr = self.__free_list.pop()
+        self.__register_map_table.set_reg(int(x[1:]), pr)
+        return pr
+
+    def __get_ready_state(self, x):
+        x = int(x[1:])
+        if self.__busy_bit_table.is_busy(x):
+            ready = False
+            value = 0
+            tag = x
+        else:
+            ready = True
+            value = self.__physical_register_file.get_reg(x)
+            tag = 0
+        return ready, tag, value
+
     def rename_and_dispatch(self):
-        buff_sz = self.__decoded_pcs.size()
-        pass 
-        # TODO: figure out what this stage does
+        # TODO:
+        # observe changes from the forwarding paths
+        pcs, instructions = self.__decoded_pcs.get_instructions()
+        sz = len(instructions)
+
+        if not self.__integer_queue.has_enough_space(sz) \
+                or not self.__active_list.has_enough_space(sz) \
+                or not self.__free_list.has_enough_space(sz):
+            self.__decoded_pcs.apply_backpressure()
+
+        renamed_instr = []
+        for i in instr:
+            rs1 = self.__rename_src_reg(ans["src1"])
+            rs2 = self.__rename_src_reg(ans["src2"])
+            rd = self.__rename_dst_reg(ans["dst"])
+            obj = {
+                "dst": rd,
+                "src1": rs1,
+                "src2": rs2
+            }
+            renamed_instr.append(obj)
+
+        for idx in range(sz):
+            ready_a, tag_a, val_a = self.__get_ready_state(
+                renamed_instr[idx]["src1"])
+            ready_b, tag_b, val_b = self.__get_ready_state(
+                renamed_instr[idx]["src2"])
+            self.__integer_queue.append(
+                renamed_instr[idx]["dst"],
+                ready_a,
+                tag_a,
+                val_a,
+                ready_b,
+                tag_b,
+                val_b,
+                instr[idx]["opcode"],
+                pcs[idx])
+
+            self.__active_list.append("False", "False", int(
+                instr[idx]["dst"][1:]), renamed_instr[idx]["dst"], pcs[idx])
 
     def issue(self):
         # TODO: implement this

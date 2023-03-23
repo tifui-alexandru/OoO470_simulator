@@ -3,6 +3,9 @@ class IntegerQueue():
         self.__max_cap = 32
         self.__queue = []
 
+    def has_enough_space(self, sz):
+        return len(self.__queue) + sz <= 32
+
     def append(
             self,
             dest_reg=0,
@@ -14,8 +17,6 @@ class IntegerQueue():
             op_b_val=0,
             opcode=None,
             pc=0):
-        if len(self.__queue) == self.__max_cap:
-            return "Integer Queue full"
 
         op_a_ready = "true" if op_a_ready else "false"
         op_b_ready = "true" if op_b_ready else "false"
@@ -31,7 +32,6 @@ class IntegerQueue():
             "OpCode": opcode,
             "PC": pc
         })
-        return "OK"
 
     def get_json(self):
         return {"IntegerQueue": self.__queue}

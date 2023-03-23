@@ -3,11 +3,11 @@ class ActiveList():
         self.__max_cap = 32
         self.__active_list = []
 
+    def has_enough_space(self, sz):
+        return len(self.__active_list) + sz <= self.__max_cap
+
     def append(self, done=False, exception=False, log_dest=0,
                old_dest=0, pc=0):
-        if len(self.__active_list) == self.__max_cap:
-            return "The Active List is full"
-
         done = "true" if done else "false"
         exception = "true" if exception else "false"
 
@@ -18,8 +18,6 @@ class ActiveList():
             "OldDestination": old_dest,
             "PC": pc
         })
-
-        return "OK"
     
     def empty(self):
         return len(self.__active_list) == 0
