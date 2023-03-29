@@ -9,9 +9,6 @@ class ActiveList():
     def append(self, done=False, exception=False, log_dest=0,
                old_dest=0, pc=0):
 
-        done = "true" if done == True else "false"
-        exception = "true" if exception == True else "false"
-
         self.__active_list.append({
             "Done": done,
             "Exception": exception,
@@ -26,14 +23,14 @@ class ActiveList():
     def pop_if_ready(self):
         if self.empty():
             return None
-        
-        done = self.__active_list[0]["Done"] == "true"
-        exception = self.__active_list[0]["Exception"] == "true"
+
+        done = self.__active_list[0]["Done"]
+        exception = self.__active_list[0]["Exception"]
         log_dest = self.__active_list[0]["LogicalDestination"]
         old_dest = self.__active_list[0]["OldDestination"]
         pc = self.__active_list[0]["PC"]
 
-        if done or exception:
+        if done == True or exception == True:
             self.__active_list = self.__active_list[1:]
             return exception, log_dest, old_dest, pc
         else:
@@ -42,12 +39,12 @@ class ActiveList():
     def mark_done(self, pc):
         for i in self.__active_list:
             if i["PC"] == pc:
-                i["Done"] = "true"
+                i["Done"] = True
 
     def mark_exception(self, pc):
         for i in self.__active_list:
             if i["PC"] == pc:
-                i["Exception"] = "true"
+                i["Exception"] = True
 
     def get_json(self):
         return {"ActiveList": self.__active_list}

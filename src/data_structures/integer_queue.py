@@ -19,9 +19,6 @@ class IntegerQueue():
             opcode=None,
             pc=0):
 
-        op_a_ready = "true" if op_a_ready == True else "false"
-        op_b_ready = "true" if op_b_ready == True else "false"
-
         self.__queue.append({
             "DestRegister": dest_reg,
             "OpAIsReady": op_a_ready,
@@ -35,7 +32,7 @@ class IntegerQueue():
         })
 
     def __is_ready(self, x):
-        return x["OpAIsReady"] == "true" and x["OpBIsReady"] == "true" 
+        return x["OpAIsReady"] and x["OpBIsReady"] 
 
     def pop_prev_ready_instr(self):
         self.__queue = [x for x in self.__queue if x not in self.__to_remove]
@@ -52,11 +49,11 @@ class IntegerQueue():
     def update_state(self, reg, val):
         for i in self.__queue:
             if i["OpARegTag"] == reg:
-                i["OpAReady"] = "true"
+                i["OpAReady"] = True
                 i["OpAValue"] = val
             
             if i["OpBRegTag"] == reg:
-                i["OpBReady"] = "true"
+                i["OpBReady"] = True
                 i["OpBValue"] = val
 
     def get_json(self):

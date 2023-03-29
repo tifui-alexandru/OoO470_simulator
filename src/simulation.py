@@ -24,11 +24,11 @@ class Simulation():
 
     def run(self):
         self.__parse_input_instructions()
-        ans = json.dumps(self.__cpu_state.dump_state())
+        ans = [self.__cpu_state.dump_state()]
 
         while not self.__cpu_state.finished():
             self.__simulate_cycle()
-            ans += json.dumps(self.__cpu_state.dump_state())
-
+            ans += [self.__cpu_state.dump_state()]
+        
         with open(self.__json_output, "w") as fout:
-            fout.write(ans)
+            fout.write(json.dumps(ans, indent=2))

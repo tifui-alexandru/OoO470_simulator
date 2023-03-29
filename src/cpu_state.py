@@ -1,4 +1,6 @@
 # TODO: implement exceptions!!!!
+import collections
+
 from data_structures.active_list import ActiveList
 from data_structures.busy_bit_table import BusyBitTable
 from data_structures.decoded_pcs import DecodedPCs
@@ -41,6 +43,8 @@ class CPU_state():
         ans = dict()
         for ds in self.__data_structures:
             ans |= ds.get_json()
+        
+        ans = dict(collections.OrderedDict(sorted(ans.items())))
         return ans
 
     def finished(self):
@@ -180,7 +184,7 @@ class CPU_state():
              
             is_exception, log_dest, old_dest, pc = result
 
-            if is_exception:
+            if is_exception == True:
                 # TODO: implement expections
                 raise Exception("Expection feature not implemented yet")
                 pass
