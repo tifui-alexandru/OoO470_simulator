@@ -30,7 +30,7 @@ class ActiveList():
         old_dest = self.__active_list[0]["OldDestination"]
         pc = self.__active_list[0]["PC"]
 
-        if done == True or exception == True:
+        if done or exception:
             self.__active_list = self.__active_list[1:]
             return exception, log_dest, old_dest, pc
         else:

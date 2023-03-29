@@ -423,29 +423,29 @@
   {
     "ActiveList": [
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 1,
         "OldDestination": 32,
         "PC": 0
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 2,
         "OldDestination": 33,
         "PC": 1
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 3,
         "OldDestination": 34,
         "PC": 2
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 4,
         "OldDestination": 35,
         "PC": 3
@@ -706,57 +706,57 @@
   {
     "ActiveList": [
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 1,
         "OldDestination": 32,
         "PC": 0
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 2,
         "OldDestination": 33,
         "PC": 1
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 3,
         "OldDestination": 34,
         "PC": 2
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 4,
         "OldDestination": 35,
         "PC": 3
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 5,
         "OldDestination": 36,
         "PC": 4
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 6,
         "OldDestination": 37,
         "PC": 5
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 8,
         "OldDestination": 38,
         "PC": 6
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 9,
         "OldDestination": 39,
         "PC": 7
@@ -1056,78 +1056,78 @@
   {
     "ActiveList": [
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 1,
         "OldDestination": 32,
         "PC": 0
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 2,
         "OldDestination": 33,
         "PC": 1
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 3,
         "OldDestination": 34,
         "PC": 2
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 4,
         "OldDestination": 35,
         "PC": 3
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 5,
         "OldDestination": 36,
         "PC": 4
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 6,
         "OldDestination": 37,
         "PC": 5
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 8,
         "OldDestination": 38,
         "PC": 6
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 9,
         "OldDestination": 39,
         "PC": 7
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 10,
         "OldDestination": 40,
         "PC": 8
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 15,
         "OldDestination": 41,
         "PC": 9
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 17,
         "OldDestination": 42,
         "PC": 10
@@ -1409,78 +1409,78 @@
   {
     "ActiveList": [
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 1,
         "OldDestination": 32,
         "PC": 0
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 2,
         "OldDestination": 33,
         "PC": 1
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 3,
         "OldDestination": 34,
         "PC": 2
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 4,
         "OldDestination": 35,
         "PC": 3
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 5,
         "OldDestination": 36,
         "PC": 4
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 6,
         "OldDestination": 37,
         "PC": 5
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 8,
         "OldDestination": 38,
         "PC": 6
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 9,
         "OldDestination": 39,
         "PC": 7
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 10,
         "OldDestination": 40,
         "PC": 8
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 15,
         "OldDestination": 41,
         "PC": 9
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 17,
         "OldDestination": 42,
         "PC": 10
@@ -1718,50 +1718,50 @@
   {
     "ActiveList": [
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 5,
         "OldDestination": 36,
         "PC": 4
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 6,
         "OldDestination": 37,
         "PC": 5
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 8,
         "OldDestination": 38,
         "PC": 6
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 9,
         "OldDestination": 39,
         "PC": 7
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 10,
         "OldDestination": 40,
         "PC": 8
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 15,
         "OldDestination": 41,
         "PC": 9
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 17,
         "OldDestination": 42,
         "PC": 10
@@ -1969,22 +1969,22 @@
   {
     "ActiveList": [
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 10,
         "OldDestination": 40,
         "PC": 8
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 15,
         "OldDestination": 41,
         "PC": 9
       },
       {
-        "Done": "False",
-        "Exception": "False",
+        "Done": false,
+        "Exception": false,
         "LogicalDestination": 17,
         "OldDestination": 42,
         "PC": 10

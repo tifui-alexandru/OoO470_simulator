@@ -135,7 +135,7 @@ class CPU_state():
                 instructions[idx]["opcode"],
                 pcs[idx])
 
-            self.__active_list.append("False", "False", int(
+            self.__active_list.append(False, False, int(
                 instructions[idx]["dst"][1:]), renamed_instr[idx]["dst"], pcs[idx])
 
         for i in range(4):
@@ -185,7 +185,7 @@ class CPU_state():
              
             is_exception, log_dest, old_dest, pc = result
 
-            if is_exception == True:
+            if is_exception:
                 # TODO: implement expections
                 raise Exception("Expection feature not implemented yet")
                 pass
