@@ -2,7 +2,6 @@ import json
 
 from cpu_state import CPU_state
 
-
 class Simulation():
     def __init__(self, json_input, json_output):
         self.__json_input = json_input
@@ -17,20 +16,21 @@ class Simulation():
     def __not_finished(self):
         return self.__cpu_state.get_pc() < len(self.__instructions)
 
-    def __propagate(self):
-        pass
-
-    def __latch(self):
+    def __symulate_cycle(self):
+        # simulate in reverse order to avoid making a copy
+        # of each data structure every time
+        self.__cpu_state.commit()
+        self.__cpu_state.execute()
+        self.__cpu_state.issue()
+        self.__cpu_state.rename_and_dispatch()
         self.__cpu_state.fetch_and_decode()
-        pass
 
     def run(self):
         self.__parse_input_instructions()
         ans = self.__cpu_state.dump_state()
 
-        while self.__not_finished or self.__cpu_state.busy():
-            self.__propagate()
-            self.__latch()
+        while self.__not_finished() or self.__cpu_state.busy():
+            self.__simulate_cycle()
             ans += json.dumps(self.__cpu_state.dump_state())
 
         with open(self.__json_output, "w") as fout:

@@ -1,6 +1,4 @@
 # TODO: implement exceptions!!!!
-import copy
-
 from data_structures.active_list import ActiveList
 from data_structures.busy_bit_table import BusyBitTable
 from data_structures.decoded_pcs import DecodedPCs
@@ -38,9 +36,6 @@ class CPU_state():
             self.__active_list,
             self.__integer_queue
         ]
-
-    def copy(self):
-        return copy.deepcopy(self)
 
     def dump_state(self):
         ans = dict()
@@ -163,7 +158,7 @@ class CPU_state():
                 curr_instr = instr[i]
             self.__alus[i].push_instr(curr_instr)
 
-    def execution(self):
+    def execute(self):
         for i in range(4):
             self.__alus[i].execute()
 
