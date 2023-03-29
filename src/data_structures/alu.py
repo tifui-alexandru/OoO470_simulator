@@ -58,3 +58,4 @@ class ALU():
 
     def execute(self):
         self.__forwarding_path = self.__exec(self.__instr_queue[1])
+        self.__instr_queue[1] = self.__instr_queue[0]

@@ -16,8 +16,11 @@ class Simulation():
     def __simulate_cycle(self):
         # simulate in reverse order to avoid making a copy
         # of each data structure every time
-        self.__cpu_state.commit()
+        
+        # first execute the ALU units, as they are asynchronous-read
         self.__cpu_state.execute()
+
+        self.__cpu_state.commit()
         self.__cpu_state.issue()
         self.__cpu_state.rename_and_dispatch()
         self.__cpu_state.fetch_and_decode()

@@ -177,14 +177,6 @@ class CPU_state():
 
     def commit(self):
         for i in range(4):
-            result = self.__alus[i].get_forwarding_path()
-            if result is None:
-                continue
-            reg, _, pc = result
-            self.__active_list.mark_done(pc)
-            self.__busy_bit_table.unmark_register(reg)
-
-        for i in range(4):
             result = self.__active_list.pop_if_ready()
             if result is None:
                 break
@@ -197,3 +189,12 @@ class CPU_state():
                 pass
             else:
                 self.__free_list.append(old_dest)
+        
+        for i in range(4):
+            result = self.__alus[i].get_forwarding_path()
+            if result is None:
+                continue
+            reg, _, pc = result
+            self.__active_list.mark_done(pc)
+            self.__busy_bit_table.unmark_register(reg)
+
