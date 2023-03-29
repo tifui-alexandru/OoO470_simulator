@@ -8,8 +8,9 @@ class ActiveList():
 
     def append(self, done=False, exception=False, log_dest=0,
                old_dest=0, pc=0):
-        done = "true" if done else "false"
-        exception = "true" if exception else "false"
+
+        done = "true" if done == True else "false"
+        exception = "true" if exception == True else "false"
 
         self.__active_list.append({
             "Done": done,

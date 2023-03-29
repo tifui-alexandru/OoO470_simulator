@@ -43,23 +43,20 @@ class CPU_state():
             ans |= ds.get_json()
         return ans
 
-    def busy(self):
-        return not self.__active_list.empty()
-
-    def get_commited_instr(self):
-        return self.__active_list.commited_instruction()
-
-    def get_pc(self):
-        return self.__pc.get_pc()
+    def finished(self):
+        return self.__pc.get_pc() == len(self.__memory) and self.__active_list.empty()
 
     def fetch_and_decode(self):
+        print(f"\nDEBUG: ============ new cycle =================\n")
         if self.__decoded_pcs.backpressure():
             return
 
         for i in range(4):
-            idx = self.__pc.get_pc() + i
+            idx = self.__pc.get_pc()
+            self.__pc.increment()
             if idx >= len(self.__memory):
                 break
+            print(f"DEBUG: fetched {self.__memory[idx]} ; pc = {self.__pc.get_pc()}")
             instr_arr = self.__memory[idx].split()
             instr_obj = {
                 "opcode": instr_arr[0],
@@ -117,6 +114,8 @@ class CPU_state():
             }
             renamed_instr.append(obj)
 
+           # print(f"DEBUG: renamed {i} \ninto\n{obj} \n\n")
+
         for idx in range(sz):
             ready_a, tag_a, val_a = self.__get_ready_state(
                 renamed_instr[idx]["src1"])
@@ -167,6 +166,8 @@ class CPU_state():
             self.__alus[i].execute()
 
     def commit(self):
+        print(f"DEBUG: active list = \n{self.__active_list.get_json()}")
+
         for i in range(4):
             result = self.__alus[i].get_forwarding_path()
             if result is None:
@@ -179,7 +180,7 @@ class CPU_state():
             result = self.__active_list.pop_if_ready()
             if result is None:
                 break
-            
+                        
             is_exception, log_dest, old_dest, pc = result
 
             if is_exception:

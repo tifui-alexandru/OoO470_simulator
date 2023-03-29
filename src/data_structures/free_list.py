@@ -12,7 +12,7 @@ class FreeList():
 
     def pop(self):
         ret_val = self.__list[0]
-        self.__list = self.__list[:-1]
+        self.__list = self.__list[1:]
         return ret_val
 
     def get_json(self):

@@ -13,9 +13,6 @@ class Simulation():
         self.__instructions = json.loads(content)
         self.__cpu_state = CPU_state(self.__instructions)
 
-    def __not_finished(self):
-        return self.__cpu_state.get_pc() < len(self.__instructions)
-
     def __simulate_cycle(self):
         # simulate in reverse order to avoid making a copy
         # of each data structure every time
@@ -29,7 +26,7 @@ class Simulation():
         self.__parse_input_instructions()
         ans = json.dumps(self.__cpu_state.dump_state())
 
-        while self.__not_finished() or self.__cpu_state.busy():
+        while not self.__cpu_state.finished():
             self.__simulate_cycle()
             ans += json.dumps(self.__cpu_state.dump_state())
 

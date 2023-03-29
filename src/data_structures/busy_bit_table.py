@@ -13,8 +13,6 @@ class BusyBitTable():
         self.__table[x] = "true"
 
     def unmark_register(self, x):
-        if self.__table[x] == "false":
-            raise Exception(f"Register {x} is not busy")
         self.__table[x] = "false"
 
     def get_json(self):
