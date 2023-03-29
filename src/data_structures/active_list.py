@@ -22,14 +22,29 @@ class ActiveList():
     def empty(self):
         return len(self.__active_list) == 0
 
-    def commited_instruction(self):
+    def pop_if_ready(self):
         if self.empty():
             return None
-        # TODO: actually commit the instruction
-        if self.__active_list[0]["Done"] == "true":
-            return self.__active_list[0]["PC"]
+        
+        done, exception, log_dest, old_dest, pc = self.__active_list[0]
+        done = done == "true"
+        exception = exception == "false"
+
+        if done or exception:
+            self.__active_list = self.__active_list[1:]
+            return exception, log_dest, old_dest, pc
         else:
             return None
+
+    def mark_done(self, pc):
+        for i in self.__active_list:
+            if i["PC"] == pc:
+                i["Done"] = "true"
+
+    def mark_exception(self, pc):
+        for i in self.__active_list:
+            if i["PC"] == pc:
+                i["Exception"] = "true"
 
     def get_json(self):
         return {"ActiveList": self.__active_list}

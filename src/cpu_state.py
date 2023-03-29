@@ -1,3 +1,4 @@
+# TODO: implement exceptions!!!!
 import copy
 
 from data_structures.active_list import ActiveList
@@ -140,7 +141,7 @@ class CPU_state():
             result = self.__alus[i].get_forwarding_path()
             if result is None:
                 continue
-            reg, val = result
+            reg, val, _ = result
             self.__physical_register_file.set_reg(reg, val)
             self.__busy_bit_table.unmark_register(reg)
 
@@ -151,8 +152,9 @@ class CPU_state():
             result = self.__alus[i].get_forwarding_path()
             if result is None:
                 continue
-            reg, val = result
+            reg, val, _ = result
             self.__integer_queue.update_state(reg, val)
+            self.__busy_bit_table.unmark_register(reg)
 
         instr = self.__integer_queue.get_ready_instr()
         for i in range(4):
@@ -162,9 +164,27 @@ class CPU_state():
             self.__alus[i].push_instr(curr_instr)
 
     def execution(self):
-        # TODO: implement this
-        pass
+        for i in range(4):
+            self.__alus[i].execute()
 
     def commit(self):
-        # TODO: implement this
-        pass
+        for i in range(4):
+            result = self.__alus[i].get_forwarding_path()
+            if result is None:
+                continue
+            _, _, pc = result
+            self.__active_list.mark_done(pc)
+            self.__busy_bit_table.unmark_register(reg)
+        
+        for i in range(4):
+            result = self.__active_list.pop_if_ready()
+            if result is None:
+                break
+            
+            is_exception, log_dest, old_dest, pc = result
+
+            if is_exception:
+                # TODO: implement expections
+                pass
+            else:
+               self.__free_list.append(old_dest) 
