@@ -9,11 +9,12 @@ from data_structures.integer_queue import IntegerQueue
 from data_structures.physical_register_file import PhysicalRegisterFile
 from data_structures.register_map_table import RegisterMapTable
 from data_structures.pc import PC
-
+from data_structures.alu import ALU
 
 class CPU_state():
     def __init__(self, memory):
         self.__memory = memory
+        self.__alus = [ALU(), ALU(), ALU(), ALU()]
 
         self.__pc = PC()
         self.__physical_register_file = PhysicalRegisterFile()
@@ -96,8 +97,6 @@ class CPU_state():
         return ready, tag, value
 
     def rename_and_dispatch(self):
-        # TODO:
-        # observe changes from the forwarding paths
         pcs, instructions = self.__decoded_pcs.get_instructions()
         sz = len(instructions)
 
@@ -135,10 +134,26 @@ class CPU_state():
                 pcs[idx])
 
             self.__active_list.append("False", "False", int(
-                instr[idx]["dst"][1:]), renamed_instr[idx]["dst"], pcs[idx])
+                instr[idx]["dst"][1:]), renamed_instr[idx]["dst"], pcs[idx[])]
+
+        for i in range(4):
+            result = self.__alus[i].get_forwarding_path()
+            if result is None:
+                continue
+            reg, val = result
+            self.__physical_register_file.set_reg(reg, val)
+            self.__busy_bit_table.unmark_register(reg)
 
     def issue(self):
-        # TODO: implement this
+        instr = self.__integer_queue.pop_ready_instr()
+        for i in range(4):
+            curr_instr = None
+            if i < len(instr):
+                curr_instr = instr[i]
+            self.__alus[i].exec_cycle(curr_instr)
+        # TODO:
+        # select at most 4 ready instructions and send them to ALUs
+        # observe changes from the fprwarding path
         pass
 
     def execution(self):

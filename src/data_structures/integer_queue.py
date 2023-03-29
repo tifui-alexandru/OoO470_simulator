@@ -2,6 +2,7 @@ class IntegerQueue():
     def __init__(self):
         self.__max_cap = 32
         self.__queue = []
+        self.__to_remove = []
 
     def has_enough_space(self, sz):
         return len(self.__queue) + sz <= 32
@@ -32,6 +33,20 @@ class IntegerQueue():
             "OpCode": opcode,
             "PC": pc
         })
+
+    def __is_ready(self, x):
+        return x["OpAIsReady"] == "true"] and x["OpBIsReady"] == "true"] 
+
+    def pop_prev_ready_instr(self):
+        self.__queue = [x for x in self.__queue if x not in self.__to_remove]
+
+    def get_ready_instr(self):
+        ready = [x for x in self.__queue if self.__is_ready(x)]
+        if len(ready > 4):
+            ready = ready[:4]
+         
+        self.__to_remove = ready
+        return ready
 
     def get_json(self):
         return {"IntegerQueue": self.__queue}

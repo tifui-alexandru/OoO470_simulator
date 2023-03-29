@@ -4,7 +4,7 @@ class DecodedPCs:
         self.__instr = []
         self.__backpressure = False
 
-    def apply_backpressure(self)
+    def apply_backpressure(self):
         self.__backpressure = True
 
     def backpressure(self):
