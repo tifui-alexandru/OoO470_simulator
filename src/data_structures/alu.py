@@ -6,30 +6,44 @@ class ALU():
         self.__forwarding_path = None
 
     def __exec(self, instr):
-        if inst is None:
+        if instr is None:
             return None
         
         r = instr["DestRegister"]
         a = instr["OpAValue"]
         b = instr["OpBValue"]
         op = instr["OpCode"]
-        pc = inst["PC"]
+        pc = instr["PC"]
 
         if op == "add" or op == "addi":
-            ans = c_int64((c_int64(a) + c_int64(b)) & 0xff)
-        elif op == "addi":
-            ans = c_int64((c_int64(a) - c_int64(b)) & 0xff)
+            a = c_int64(a).value
+            b = c_int64(b).value
+            ans = (a + b) & 0xff
+            ans = c_int64(ans).value
+        elif op == "sub":
+            a = c_int64(a).value
+            b = c_int64(b).value
+            ans = (a - b) & 0xff
+            ans = c_int64(ans).value
         elif op == "mulu":
-            ans = c_uint64((c_uint64(a) * c_uint64(b)) & 0xff)
+            a = c_uint64(a).value
+            b = c_uint64(b).value
+            ans = (a * b) & 0xff
+            ans = c_uint64(ans).value
         elif op == "divu":
             if c_uint64(b) == 0:
                 return "Exception division by 0"
-            ans = c_uint64((c_uint64(a) * c_uint64(b)) & 0xff)
+            a = c_uint64(a).value
+            b = c_uint64(b).value
+            ans = (a // b) & 0xff
+            ans = c_uint64(ans).value
         elif op == "remu":
             if c_uint64(b) == 0:
                 return "Exception modulo by 0"
-            ans = c_uint64((c_uint64(a) * c_uint64(b)) & 0xff)
-            ans = c_uint64((c_uint64(a) * c_uint64(b)) & 0xff)
+            a = c_uint64(a).value
+            b = c_uint64(b).value
+            ans = (a % b) & 0xff
+            ans = c_uint64(ans).value
         else:
             raise Exception("Undefined operation!")
 

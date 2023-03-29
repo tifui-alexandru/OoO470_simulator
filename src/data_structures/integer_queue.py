@@ -14,7 +14,7 @@ class IntegerQueue():
             op_a_tag=0,
             op_a_val=0,
             op_b_ready=False,
-            ob_b_tag=0,
+            op_b_tag=0,
             op_b_val=0,
             opcode=None,
             pc=0):
@@ -25,7 +25,7 @@ class IntegerQueue():
         self.__queue.append({
             "DestRegister": dest_reg,
             "OpAIsReady": op_a_ready,
-            "OpARegtag": op_a_tag,
+            "OpARegTag": op_a_tag,
             "OpAValue": op_a_val,
             "OpBIsReady": op_b_ready,
             "OpBRegTag": op_b_tag,
@@ -35,7 +35,7 @@ class IntegerQueue():
         })
 
     def __is_ready(self, x):
-        return x["OpAIsReady"] == "true"] and x["OpBIsReady"] == "true"] 
+        return x["OpAIsReady"] == "true" and x["OpBIsReady"] == "true" 
 
     def pop_prev_ready_instr(self):
         self.__queue = [x for x in self.__queue if x not in self.__to_remove]
@@ -43,7 +43,7 @@ class IntegerQueue():
 
     def get_ready_instr(self):
         ready = [x for x in self.__queue if self.__is_ready(x)]
-        if len(ready > 4):
+        if len(ready) > 4:
             ready = ready[:4]
          
         self.__to_remove = ready
@@ -51,11 +51,11 @@ class IntegerQueue():
 
     def update_state(self, reg, val):
         for i in self.__queue:
-            if i["OpATag"] == reg:
+            if i["OpARegTag"] == reg:
                 i["OpAReady"] = "true"
                 i["OpAValue"] = val
             
-            if i["OpBTag"] == reg:
+            if i["OpBRegTag"] == reg:
                 i["OpBReady"] = "true"
                 i["OpBValue"] = val
 

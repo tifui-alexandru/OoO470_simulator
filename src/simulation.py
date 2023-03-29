@@ -16,7 +16,7 @@ class Simulation():
     def __not_finished(self):
         return self.__cpu_state.get_pc() < len(self.__instructions)
 
-    def __symulate_cycle(self):
+    def __simulate_cycle(self):
         # simulate in reverse order to avoid making a copy
         # of each data structure every time
         self.__cpu_state.commit()
@@ -27,7 +27,7 @@ class Simulation():
 
     def run(self):
         self.__parse_input_instructions()
-        ans = self.__cpu_state.dump_state()
+        ans = json.dumps(self.__cpu_state.dump_state())
 
         while self.__not_finished() or self.__cpu_state.busy():
             self.__simulate_cycle()

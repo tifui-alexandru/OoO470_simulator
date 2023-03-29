@@ -71,7 +71,7 @@ class CPU_state():
 
     def __rename_src_reg(self, x):
         if x[0] == 'x':
-            return "p" + str(self.__register_map_table(int(x[1:])))
+            return "p" + str(self.__register_map_table.get_reg(int(x[1:])))
         else:
             return x
 
@@ -81,6 +81,10 @@ class CPU_state():
         return pr
 
     def __get_ready_state(self, x):
+        if x[0] != 'p':
+            # immediate value
+            return True, 0, int(x)
+
         x = int(x[1:])
         if self.__busy_bit_table.is_busy(x):
             ready = False
@@ -102,10 +106,10 @@ class CPU_state():
             self.__decoded_pcs.apply_backpressure()
 
         renamed_instr = []
-        for i in instr:
-            rs1 = self.__rename_src_reg(ans["src1"])
-            rs2 = self.__rename_src_reg(ans["src2"])
-            rd = self.__rename_dst_reg(ans["dst"])
+        for i in instructions:
+            rs1 = self.__rename_src_reg(i["src1"])
+            rs2 = self.__rename_src_reg(i["src2"])
+            rd = self.__rename_dst_reg(i["dst"])
             obj = {
                 "dst": rd,
                 "src1": rs1,
@@ -126,11 +130,11 @@ class CPU_state():
                 ready_b,
                 tag_b,
                 val_b,
-                instr[idx]["opcode"],
+                instructions[idx]["opcode"],
                 pcs[idx])
 
             self.__active_list.append("False", "False", int(
-                instr[idx]["dst"][1:]), renamed_instr[idx]["dst"], pcs[idx[])]
+                instructions[idx]["dst"][1:]), renamed_instr[idx]["dst"], pcs[idx])
 
         for i in range(4):
             result = self.__alus[i].get_forwarding_path()
