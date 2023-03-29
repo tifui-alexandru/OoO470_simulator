@@ -27,9 +27,11 @@ class ActiveList():
         if self.empty():
             return None
         
-        done, exception, log_dest, old_dest, pc = self.__active_list[0]
-        done = done == "true"
-        exception = exception == "false"
+        done = self.__active_list[0]["Done"] == "true"
+        exception = self.__active_list[0]["Exception"] == "true"
+        log_dest = self.__active_list[0]["LogicalDestination"]
+        old_dest = self.__active_list[0]["OldDestination"]
+        pc = self.__active_list[0]["PC"]
 
         if done or exception:
             self.__active_list = self.__active_list[1:]

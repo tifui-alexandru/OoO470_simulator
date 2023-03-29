@@ -47,16 +47,14 @@ class CPU_state():
         return self.__pc.get_pc() == len(self.__memory) and self.__active_list.empty()
 
     def fetch_and_decode(self):
-        print(f"\nDEBUG: ============ new cycle =================\n")
         if self.__decoded_pcs.backpressure():
             return
 
         for i in range(4):
             idx = self.__pc.get_pc()
-            self.__pc.increment()
-            if idx >= len(self.__memory):
+            if idx == len(self.__memory):
                 break
-            print(f"DEBUG: fetched {self.__memory[idx]} ; pc = {self.__pc.get_pc()}")
+            self.__pc.increment()
             instr_arr = self.__memory[idx].split()
             instr_obj = {
                 "opcode": instr_arr[0],
@@ -101,7 +99,9 @@ class CPU_state():
                 or not self.__active_list.has_enough_space(sz) \
                 or not self.__free_list.has_enough_space(sz):
             self.__decoded_pcs.apply_backpressure()
-
+            return
+        
+        self.__decoded_pcs.flush()
         renamed_instr = []
         for i in instructions:
             rs1 = self.__rename_src_reg(i["src1"])
@@ -113,8 +113,6 @@ class CPU_state():
                 "src2": rs2
             }
             renamed_instr.append(obj)
-
-           # print(f"DEBUG: renamed {i} \ninto\n{obj} \n\n")
 
         for idx in range(sz):
             ready_a, tag_a, val_a = self.__get_ready_state(
@@ -143,6 +141,7 @@ class CPU_state():
             self.__physical_register_file.set_reg(reg, val)
             self.__busy_bit_table.unmark_register(reg)
 
+
     def issue(self):
         self.__integer_queue.pop_prev_ready_instr()
         
@@ -166,13 +165,11 @@ class CPU_state():
             self.__alus[i].execute()
 
     def commit(self):
-        print(f"DEBUG: active list = \n{self.__active_list.get_json()}")
-
         for i in range(4):
             result = self.__alus[i].get_forwarding_path()
             if result is None:
                 continue
-            _, _, pc = result
+            reg, _, pc = result
             self.__active_list.mark_done(pc)
             self.__busy_bit_table.unmark_register(reg)
         
@@ -180,11 +177,12 @@ class CPU_state():
             result = self.__active_list.pop_if_ready()
             if result is None:
                 break
-                        
+             
             is_exception, log_dest, old_dest, pc = result
 
             if is_exception:
                 # TODO: implement expections
+                raise Exception("Expection feature not implemented yet")
                 pass
             else:
                self.__free_list.append(old_dest) 

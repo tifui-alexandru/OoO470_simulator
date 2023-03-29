@@ -19,8 +19,8 @@ class IntegerQueue():
             opcode=None,
             pc=0):
 
-        op_a_ready = "true" if op_a_ready else "false"
-        op_b_ready = "true" if op_b_ready else "false"
+        op_a_ready = "true" if op_a_ready == True else "false"
+        op_b_ready = "true" if op_b_ready == True else "false"
 
         self.__queue.append({
             "DestRegister": dest_reg,
