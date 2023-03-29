@@ -39,6 +39,7 @@ class IntegerQueue():
 
     def pop_prev_ready_instr(self):
         self.__queue = [x for x in self.__queue if x not in self.__to_remove]
+        self.__to_remove = []
 
     def get_ready_instr(self):
         ready = [x for x in self.__queue if self.__is_ready(x)]
@@ -47,6 +48,16 @@ class IntegerQueue():
          
         self.__to_remove = ready
         return ready
+
+    def update_state(self, reg, val):
+        for i in self.__queue:
+            if i["OpATag"] == reg:
+                i["OpAReady"] = "true"
+                i["OpAValue"] = val
+            
+            if i["OpBTag"] == reg:
+                i["OpBReady"] = "true"
+                i["OpBValue"] = val
 
     def get_json(self):
         return {"IntegerQueue": self.__queue}

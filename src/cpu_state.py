@@ -145,16 +145,21 @@ class CPU_state():
             self.__busy_bit_table.unmark_register(reg)
 
     def issue(self):
-        instr = self.__integer_queue.pop_ready_instr()
+        self.__integer_queue.pop_prev_ready_instr()
+        
+        for i in range(4):
+            result = self.__alus[i].get_forwarding_path()
+            if result is None:
+                continue
+            reg, val = result
+            self.__integer_queue.update_state(reg, val)
+
+        instr = self.__integer_queue.get_ready_instr()
         for i in range(4):
             curr_instr = None
             if i < len(instr):
                 curr_instr = instr[i]
-            self.__alus[i].exec_cycle(curr_instr)
-        # TODO:
-        # select at most 4 ready instructions and send them to ALUs
-        # observe changes from the fprwarding path
-        pass
+            self.__alus[i].push_instr(curr_instr)
 
     def execution(self):
         # TODO: implement this

@@ -11,7 +11,9 @@ class ALU():
     def get_forwarding_path(self):
         return self.__forwarding_path
 
-    def exec_cycle(self, new_instr):
-        self.__forwarding_path = self.__exec(self.__instr_queue[1])
+    def push_instr(self, new_instr):
         self.__instr_queue[1] = self.__instr_queue[0]
         self.__instr_queue[0] = new_instr
+
+    def execute(self):
+        self.__forwarding_path = self.__exec(self.__instr_queue[1])
