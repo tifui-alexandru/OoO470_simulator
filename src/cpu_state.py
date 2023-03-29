@@ -1,6 +1,6 @@
 # TODO: implement exceptions!!!!
 import collections
-import copy 
+import copy
 
 from data_structures.active_list import ActiveList
 from data_structures.busy_bit_table import BusyBitTable
@@ -12,6 +12,7 @@ from data_structures.physical_register_file import PhysicalRegisterFile
 from data_structures.register_map_table import RegisterMapTable
 from data_structures.pc import PC
 from data_structures.alu import ALU
+
 
 class CPU_state():
     def __init__(self, memory):
@@ -44,7 +45,7 @@ class CPU_state():
         ans = dict()
         for ds in self.__data_structures:
             ans |= ds.get_json()
-        
+
         ans = dict(collections.OrderedDict(sorted(ans.items())))
         return copy.deepcopy(ans)
 
@@ -105,15 +106,17 @@ class CPU_state():
                 or not self.__free_list.has_enough_space(sz):
             self.__decoded_pcs.apply_backpressure()
             return
-        
+
         self.__decoded_pcs.flush()
         renamed_instr = []
         for i in instructions:
             rs1 = self.__rename_src_reg(i["src1"])
             rs2 = self.__rename_src_reg(i["src2"])
+            old_rd = self.__register_map_table.get_reg(int(i["dst"][1:]))
             rd = self.__rename_dst_reg(i["dst"])
             obj = {
                 "dst": rd,
+                "old_dst": old_rd,
                 "src1": rs1,
                 "src2": rs2
             }
@@ -135,8 +138,11 @@ class CPU_state():
                 instructions[idx]["opcode"],
                 pcs[idx])
 
-            self.__active_list.append(False, False, int(
-                instructions[idx]["dst"][1:]), renamed_instr[idx]["dst"], pcs[idx])
+            self.__active_list.append(False,
+                                      False,
+                                      int(instructions[idx]["dst"][1:]),
+                                      int(renamed_instr[idx]["old_dst"]),
+                                      pcs[idx])
 
         for i in range(4):
             result = self.__alus[i].get_forwarding_path()
@@ -146,10 +152,9 @@ class CPU_state():
             self.__physical_register_file.set_reg(reg, val)
             self.__busy_bit_table.unmark_register(reg)
 
-
     def issue(self):
         self.__integer_queue.pop_prev_ready_instr()
-        
+
         for i in range(4):
             result = self.__alus[i].get_forwarding_path()
             if result is None:
@@ -177,12 +182,12 @@ class CPU_state():
             reg, _, pc = result
             self.__active_list.mark_done(pc)
             self.__busy_bit_table.unmark_register(reg)
-        
+
         for i in range(4):
             result = self.__active_list.pop_if_ready()
             if result is None:
                 break
-             
+
             is_exception, log_dest, old_dest, pc = result
 
             if is_exception:
@@ -190,4 +195,4 @@ class CPU_state():
                 raise Exception("Expection feature not implemented yet")
                 pass
             else:
-               self.__free_list.append(old_dest) 
+                self.__free_list.append(old_dest)
