@@ -1,5 +1,6 @@
 # TODO: implement exceptions!!!!
 import collections
+import copy 
 
 from data_structures.active_list import ActiveList
 from data_structures.busy_bit_table import BusyBitTable
@@ -45,7 +46,7 @@ class CPU_state():
             ans |= ds.get_json()
         
         ans = dict(collections.OrderedDict(sorted(ans.items())))
-        return ans
+        return copy.deepcopy(ans)
 
     def finished(self):
         return self.__pc.get_pc() == len(self.__memory) and self.__active_list.empty()

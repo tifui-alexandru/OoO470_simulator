@@ -28,7 +28,7 @@ class Simulation():
 
         while not self.__cpu_state.finished():
             self.__simulate_cycle()
-            ans += [self.__cpu_state.dump_state()]
+            ans.append(self.__cpu_state.dump_state())
         
         with open(self.__json_output, "w") as fout:
             fout.write(json.dumps(ans, indent=2))
