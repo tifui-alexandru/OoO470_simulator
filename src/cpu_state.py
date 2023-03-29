@@ -68,6 +68,8 @@ class CPU_state():
                 "src1": instr_arr[2][:-1],
                 "src2": instr_arr[3]
             }
+            if instr_obj["opcode"][-1] == "i":
+                instr_obj["opcode"] = instr_obj["opcode"][:-1]
             self.__decoded_pcs.append(idx, instr_obj)
 
     def __rename_src_reg(self, x):
@@ -79,6 +81,7 @@ class CPU_state():
     def __rename_dst_reg(self, x):
         pr = self.__free_list.pop()
         self.__register_map_table.set_reg(int(x[1:]), pr)
+        self.__busy_bit_table.mark_register(pr)
         return pr
 
     def __get_ready_state(self, x):
@@ -153,8 +156,6 @@ class CPU_state():
             self.__busy_bit_table.unmark_register(reg)
 
     def issue(self):
-        self.__integer_queue.pop_prev_ready_instr()
-
         for i in range(4):
             result = self.__alus[i].get_forwarding_path()
             if result is None:
