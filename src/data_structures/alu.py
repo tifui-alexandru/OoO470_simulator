@@ -1,3 +1,5 @@
+from ctypes import c_int64, c_uint64
+
 class ALU():
     def __init__(self):
         self.__instr_queue = [None, None]
@@ -6,7 +8,32 @@ class ALU():
     def __exec(self, instr):
         if inst is None:
             return None
+        
+        r = instr["DestRegister"]
+        a = instr["OpAValue"]
+        b = instr["OpBValue"]
+        op = instr["OpCode"]
+        pc = inst["PC"]
 
+        if op == "add" or op == "addi":
+            ans = c_int64((c_int64(a) + c_int64(b)) & 0xff)
+        elif op == "addi":
+            ans = c_int64((c_int64(a) - c_int64(b)) & 0xff)
+        elif op == "mulu":
+            ans = c_uint64((c_uint64(a) * c_uint64(b)) & 0xff)
+        elif op == "divu":
+            if c_uint64(b) == 0:
+                return "Exception division by 0"
+            ans = c_uint64((c_uint64(a) * c_uint64(b)) & 0xff)
+        elif op == "remu":
+            if c_uint64(b) == 0:
+                return "Exception modulo by 0"
+            ans = c_uint64((c_uint64(a) * c_uint64(b)) & 0xff)
+            ans = c_uint64((c_uint64(a) * c_uint64(b)) & 0xff)
+        else:
+            raise Exception("Undefined operation!")
+
+        return r, ans, pc 
 
     def get_forwarding_path(self):
         return self.__forwarding_path
