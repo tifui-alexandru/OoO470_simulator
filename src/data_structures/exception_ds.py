@@ -7,9 +7,11 @@ class ExceptionDS():
         self.__flag = True
         self.__pc = pc
 
-    def handle_exception(self, pc):
+    def handle_exception(self):
         self.__flag = False
-        self.__pc = 0
+
+    def is_exception(self):
+        return self.__flag
 
     def get_json(self):
         return {

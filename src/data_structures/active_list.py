@@ -31,10 +31,21 @@ class ActiveList():
         pc = self.__active_list[0]["PC"]
 
         if done or exception:
-            self.__active_list = self.__active_list[1:]
+            if not exception:
+                self.__active_list = self.__active_list[1:]
             return exception, log_dest, old_dest, pc
         else:
             return None
+    
+    def pop_for_exception(self):
+        if self.empty():
+            return None
+
+        log_dest = self.__active_list[-1]["LogicalDestination"]
+        old_dest = self.__active_list[-1]["OldDestination"]
+
+        self.__active_list = self.__active_list[:-1]
+        return log_dest, old_dest
 
     def mark_done(self, pc):
         for i in self.__active_list:
@@ -44,6 +55,7 @@ class ActiveList():
     def mark_exception(self, pc):
         for i in self.__active_list:
             if i["PC"] == pc:
+                i["Done"] = True
                 i["Exception"] = True
 
     def get_json(self):

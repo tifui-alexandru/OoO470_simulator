@@ -53,5 +53,8 @@ class IntegerQueue():
                 i["OpBIsReady"] = True
                 i["OpBValue"] = val
 
+    def reset(self):
+        self.__queue = []
+
     def get_json(self):
         return {"IntegerQueue": self.__queue}

@@ -49,10 +49,16 @@ class CPU_state():
         return copy.deepcopy(ans)
 
     def finished(self):
-        return self.__pc.get_pc() == len(self.__memory) and self.__active_list.empty()
+        return (self.__pc.get_pc() == len(self.__memory) or self.__pc.is_exception(
+        )) and self.__active_list.empty() and not self.__is_in_exception_mode()
 
     def fetch_and_decode(self):
-        if self.__decoded_pcs.backpressure():
+        if self.__decoded_pcs.backpressure() or self.__pc.is_exception():
+            return
+
+        if self.__is_in_exception_mode():
+            self.__pc.set_exception_pc()
+            self.__decoded_pcs.flush()
             return
 
         for i in range(4):
@@ -100,6 +106,9 @@ class CPU_state():
         return ready, tag, value
 
     def rename_and_dispatch(self):
+        if self.__is_in_exception_mode():
+            return
+
         pcs, instructions = self.__decoded_pcs.get_instructions()
         sz = len(instructions)
 
@@ -116,7 +125,8 @@ class CPU_state():
             reg, val, pc, exception = result
             if exception:
                 self.__active_list.mark_exception(pc)
-            
+                continue
+
             self.__physical_register_file.set_reg(reg, val)
             self.__busy_bit_table.unmark_register(reg)
 
@@ -158,6 +168,8 @@ class CPU_state():
                                       pcs[idx])
 
     def issue(self):
+        if self.__is_in_exception_mode():
+            return
         for i in range(4):
             result = self.__alus[i].get_forwarding_path()
             if result is None:
@@ -165,6 +177,7 @@ class CPU_state():
             reg, val, pc, exception = result
             if exception:
                 self.__active_list.mark_exception(pc)
+                continue
 
             self.__integer_queue.update_state(reg, val)
             self.__busy_bit_table.unmark_register(reg)
@@ -177,10 +190,16 @@ class CPU_state():
             self.__alus[i].push_instr(curr_instr)
 
     def execute(self):
+        if self.__is_in_exception_mode():
+            return
+
         for i in range(4):
             self.__alus[i].execute()
 
     def commit(self):
+        if self.__is_in_exception_mode():
+            self.__exec__exception_mode()
+
         for i in range(4):
             result = self.__active_list.pop_if_ready()
             if result is None:
@@ -189,11 +208,15 @@ class CPU_state():
             is_exception, log_dest, old_dest, pc = result
 
             if is_exception:
-                raise Exception("Expection feature not implemented yet")
-                pass
+                self.__exception_ds.raise_exception(pc)
+                for i in range(4):
+                    self.__alus[i].reset()
+                self.__integer_queue.reset()
+
+                return
             else:
                 self.__free_list.append(old_dest)
-        
+
         for i in range(4):
             result = self.__alus[i].get_forwarding_path()
             if result is None:
@@ -201,7 +224,26 @@ class CPU_state():
             reg, val, pc, exception = result
             if exception:
                 self.__active_list.mark_exception(pc)
+                return
 
             self.__active_list.mark_done(pc)
             self.__busy_bit_table.unmark_register(reg)
 
+    def __is_in_exception_mode(self):
+        return self.__exception_ds.is_exception()
+
+    def __exec__exception_mode(self):
+        if self.__active_list.empty():
+            self.__exception_ds.handle_exception()
+
+        for i in range(4):
+            instr = self.__active_list.pop_for_exception()
+            if instr is None:
+                continue
+
+            log_dest, old_dest = instr
+
+            curr_dest = self.__register_map_table.get_reg(log_dest)
+            self.__free_list.append(curr_dest)
+            self.__busy_bit_table.unmark_register(curr_dest)
+            self.__register_map_table.set_reg(log_dest, old_dest)
