@@ -18,34 +18,40 @@ class ALU():
         if op == "add" or op == "addi":
             a = c_int64(a).value
             b = c_int64(b).value
-            ans = (a + b) & 0xff
-            ans = c_int64(ans).value
+            ans = a + b
+            ans = c_uint64(ans).value
         elif op == "sub":
             a = c_int64(a).value
             b = c_int64(b).value
-            ans = (a - b) & 0xff
-            ans = c_int64(ans).value
+            ans = a - b
+            ans = c_uint64(ans).value
         elif op == "mulu":
             a = c_uint64(a).value
             b = c_uint64(b).value
-            ans = (a * b) & 0xff
+            ans = a * b
             ans = c_uint64(ans).value
         elif op == "divu":
-            if c_uint64(b) == 0:
-                return "Exception division by 0"
             a = c_uint64(a).value
             b = c_uint64(b).value
-            ans = (a // b) & 0xff
+            
+            if b == 0:
+                return "Exception division by 0"
+
+            ans = a // b
             ans = c_uint64(ans).value
         elif op == "remu":
-            if c_uint64(b) == 0:
-                return "Exception modulo by 0"
             a = c_uint64(a).value
             b = c_uint64(b).value
-            ans = (a % b) & 0xff
+            
+            if b == 0:
+                return "Exception modulo by 0"
+
+            ans = a % b
             ans = c_uint64(ans).value
         else:
             raise Exception("Undefined operation!")
+
+        print(f"DEBUG: {a} {op} {b} = {ans}")
 
         return r, ans, pc 
 

@@ -44,11 +44,13 @@ class IntegerQueue():
     def update_state(self, reg, val):
         for i in self.__queue:
             if i["OpARegTag"] == reg:
-                i["OpAReady"] = True
+                i["OpARegTag"] = 0
+                i["OpAIsReady"] = True
                 i["OpAValue"] = val
-            
+                
             if i["OpBRegTag"] == reg:
-                i["OpBReady"] = True
+                i["OpBRegTag"] = 0
+                i["OpBIsReady"] = True
                 i["OpBValue"] = val
 
     def get_json(self):

@@ -8,7 +8,7 @@ class FreeList():
     def append(self, x):
         if x in self.__list:
             raise Exception(f"Register {x} already in list")
-        self.__list = [x] + self.__list
+        self.__list.append(x)
 
     def pop(self):
         ret_val = self.__list[0]

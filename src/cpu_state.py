@@ -98,6 +98,7 @@ class CPU_state():
             ready = True
             value = self.__physical_register_file.get_reg(x)
             tag = 0
+            print(f"DEBUG: ph_reg = {x} val = {value}")
         return ready, tag, value
 
     def rename_and_dispatch(self):
