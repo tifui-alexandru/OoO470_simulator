@@ -1,4 +1,3 @@
-# TODO: implement exceptions!!!!
 import collections
 import copy
 
@@ -114,7 +113,10 @@ class CPU_state():
             result = self.__alus[i].get_forwarding_path()
             if result is None:
                 continue
-            reg, val, _ = result
+            reg, val, pc, exception = result
+            if exception:
+                self.__active_list.mark_exception(pc)
+            
             self.__physical_register_file.set_reg(reg, val)
             self.__busy_bit_table.unmark_register(reg)
 
@@ -160,7 +162,10 @@ class CPU_state():
             result = self.__alus[i].get_forwarding_path()
             if result is None:
                 continue
-            reg, val, _ = result
+            reg, val, pc, exception = result
+            if exception:
+                self.__active_list.mark_exception(pc)
+
             self.__integer_queue.update_state(reg, val)
             self.__busy_bit_table.unmark_register(reg)
 
@@ -184,7 +189,6 @@ class CPU_state():
             is_exception, log_dest, old_dest, pc = result
 
             if is_exception:
-                # TODO: implement expections
                 raise Exception("Expection feature not implemented yet")
                 pass
             else:
@@ -194,7 +198,10 @@ class CPU_state():
             result = self.__alus[i].get_forwarding_path()
             if result is None:
                 continue
-            reg, _, pc = result
+            reg, val, pc, exception = result
+            if exception:
+                self.__active_list.mark_exception(pc)
+
             self.__active_list.mark_done(pc)
             self.__busy_bit_table.unmark_register(reg)
 

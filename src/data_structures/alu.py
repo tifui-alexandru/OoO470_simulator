@@ -15,6 +15,8 @@ class ALU():
         op = instr["OpCode"]
         pc = instr["PC"]
 
+        ans = 0
+        exception = False
         if op == "add" or op == "addi":
             a = c_int64(a).value
             b = c_int64(b).value
@@ -35,23 +37,23 @@ class ALU():
             b = c_uint64(b).value
             
             if b == 0:
-                return "Exception division by 0"
-
-            ans = a // b
-            ans = c_uint64(ans).value
+                exception = True
+            else:
+                ans = a // b
+                ans = c_uint64(ans).value
         elif op == "remu":
             a = c_uint64(a).value
             b = c_uint64(b).value
             
             if b == 0:
+                exception = True
+            else:
+                ans = a % b
                 return "Exception modulo by 0"
-
-            ans = a % b
-            ans = c_uint64(ans).value
         else:
             raise Exception("Undefined operation!")
 
-        return r, ans, pc 
+        return r, ans, pc, exception 
 
     def get_forwarding_path(self):
         return self.__forwarding_path
