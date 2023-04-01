@@ -98,7 +98,6 @@ class CPU_state():
             ready = True
             value = self.__physical_register_file.get_reg(x)
             tag = 0
-            print(f"DEBUG: ph_reg = {x} val = {value}")
         return ready, tag, value
 
     def rename_and_dispatch(self):
@@ -110,6 +109,14 @@ class CPU_state():
                 or not self.__free_list.has_enough_space(sz):
             self.__decoded_pcs.apply_backpressure()
             return
+
+        for i in range(4):
+            result = self.__alus[i].get_forwarding_path()
+            if result is None:
+                continue
+            reg, val, _ = result
+            self.__physical_register_file.set_reg(reg, val)
+            self.__busy_bit_table.unmark_register(reg)
 
         self.__decoded_pcs.flush()
         renamed_instr = []
@@ -147,14 +154,6 @@ class CPU_state():
                                       int(instructions[idx]["dst"][1:]),
                                       int(renamed_instr[idx]["old_dst"]),
                                       pcs[idx])
-
-        for i in range(4):
-            result = self.__alus[i].get_forwarding_path()
-            if result is None:
-                continue
-            reg, val, _ = result
-            self.__physical_register_file.set_reg(reg, val)
-            self.__busy_bit_table.unmark_register(reg)
 
     def issue(self):
         for i in range(4):

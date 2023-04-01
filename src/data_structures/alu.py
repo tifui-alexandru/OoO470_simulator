@@ -51,8 +51,6 @@ class ALU():
         else:
             raise Exception("Undefined operation!")
 
-        print(f"DEBUG: {a} {op} {b} = {ans}")
-
         return r, ans, pc 
 
     def get_forwarding_path(self):
