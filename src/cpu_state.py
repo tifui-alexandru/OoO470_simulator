@@ -224,10 +224,8 @@ class CPU_state():
             reg, val, pc, exception = result
             if exception:
                 self.__active_list.mark_exception(pc)
-                return
 
             self.__active_list.mark_done(pc)
-            self.__busy_bit_table.unmark_register(reg)
 
     def __is_in_exception_mode(self):
         return self.__exception_ds.is_exception()
