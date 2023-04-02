@@ -198,6 +198,7 @@ class CPU_state():
     def commit(self):
         if self.__is_in_exception_mode():
             self.__exec__exception_mode()
+            print(f"DEBUG: issue alu = {i} reg = {reg} val = {val} pc = {pc}")
 
         for i in range(4):
             result = self.__active_list.pop_if_ready()

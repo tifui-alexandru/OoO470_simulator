@@ -43,12 +43,12 @@ class IntegerQueue():
 
     def update_state(self, reg, val):
         for i in self.__queue:
-            if i["OpARegTag"] == reg:
+            if i["OpARegTag"] == reg and not i["OpAIsReady"]:
                 i["OpARegTag"] = 0
                 i["OpAIsReady"] = True
                 i["OpAValue"] = val
                 
-            if i["OpBRegTag"] == reg:
+            if i["OpBRegTag"] == reg and not i["OpBIsReady"]:
                 i["OpBRegTag"] = 0
                 i["OpBIsReady"] = True
                 i["OpBValue"] = val
