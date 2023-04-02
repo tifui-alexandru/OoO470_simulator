@@ -50,7 +50,7 @@ class CPU_state():
 
     def finished(self):
         return (self.__pc.get_pc() == len(self.__memory) or self.__pc.is_exception(
-        )) and self.__active_list.empty() and not self.__is_in_exception_mode()
+        )) and self.__active_list.empty() and not self.__is_in_exception_mode() and self.__decoded_pcs.empty()
 
     def fetch_and_decode(self):
         if self.__decoded_pcs.backpressure() or self.__pc.is_exception():
@@ -123,7 +123,7 @@ class CPU_state():
 
             self.__physical_register_file.set_reg(reg, val)
             self.__busy_bit_table.unmark_register(reg)
-        
+
         if not self.__integer_queue.has_enough_space(sz) \
                 or not self.__active_list.has_enough_space(sz) \
                 or not self.__free_list.has_enough_space(sz):
@@ -198,7 +198,6 @@ class CPU_state():
     def commit(self):
         if self.__is_in_exception_mode():
             self.__exec__exception_mode()
-            print(f"DEBUG: issue alu = {i} reg = {reg} val = {val} pc = {pc}")
 
         for i in range(4):
             result = self.__active_list.pop_if_ready()

@@ -4,6 +4,9 @@ class DecodedPCs:
         self.__instr = []
         self.__backpressure = False
 
+    def empty(self):
+        return len(self.__pcs) == 0
+
     def apply_backpressure(self):
         self.__backpressure = True
 
