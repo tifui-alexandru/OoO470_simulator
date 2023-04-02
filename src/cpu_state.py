@@ -112,12 +112,6 @@ class CPU_state():
         pcs, instructions = self.__decoded_pcs.get_instructions()
         sz = len(instructions)
 
-        if not self.__integer_queue.has_enough_space(sz) \
-                or not self.__active_list.has_enough_space(sz) \
-                or not self.__free_list.has_enough_space(sz):
-            self.__decoded_pcs.apply_backpressure()
-            return
-
         for i in range(4):
             result = self.__alus[i].get_forwarding_path()
             if result is None:
@@ -129,6 +123,12 @@ class CPU_state():
 
             self.__physical_register_file.set_reg(reg, val)
             self.__busy_bit_table.unmark_register(reg)
+        
+        if not self.__integer_queue.has_enough_space(sz) \
+                or not self.__active_list.has_enough_space(sz) \
+                or not self.__free_list.has_enough_space(sz):
+            self.__decoded_pcs.apply_backpressure()
+            return
 
         self.__decoded_pcs.flush()
         renamed_instr = []
@@ -178,7 +178,6 @@ class CPU_state():
             if exception:
                 self.__active_list.mark_exception(pc)
                 continue
-
             self.__integer_queue.update_state(reg, val)
             self.__busy_bit_table.unmark_register(reg)
 
