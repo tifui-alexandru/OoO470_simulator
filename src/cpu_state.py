@@ -53,12 +53,12 @@ class CPU_state():
         )) and self.__active_list.empty() and not self.__is_in_exception_mode() and self.__decoded_pcs.empty()
 
     def fetch_and_decode(self):
-        if self.__decoded_pcs.backpressure() or self.__pc.is_exception():
-            return
-
         if self.__is_in_exception_mode():
             self.__pc.set_exception_pc()
             self.__decoded_pcs.flush()
+            return
+        
+        if self.__decoded_pcs.backpressure() or self.__pc.is_exception():
             return
 
         for i in range(4):
@@ -198,6 +198,7 @@ class CPU_state():
     def commit(self):
         if self.__is_in_exception_mode():
             self.__exec__exception_mode()
+            return
 
         for i in range(4):
             result = self.__active_list.pop_if_ready()
