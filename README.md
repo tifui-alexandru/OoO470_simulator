@@ -1,6 +1,6 @@
 ### OoO470_simulator
 
-This project implements a cycle-accurate simulator for a superscalar processor called OoO470. The processor runs a small subset of RISC-V instructions (namely add, addi, mulu, divu and remu).
+This project implements a cycle-accurate simulator for a out-of-order processor called OoO470. The processor runs a small subset of RISC-V instructions (namely add, addi, mulu, divu and remu).
 
 
 The simulator reads an assembly program and dumps the state of the
